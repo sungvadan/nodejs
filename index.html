@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Socket IO</title>
+</head>
+<body>
+    <h1>Communication avec socket.io !</h1>
+
+    <input type="button" value="cliquez" id="button">
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://localhost:8089')
+        var pseudo = prompt('votre pseudo');
+        socket.emit('pseudo', pseudo)
+        socket.on('message', function(message) {
+            alert('Le serveur a un message pour vous : ' + message)
+        })
+
+        document.getElementById('button').addEventListener('click', function(e) {
+            socket.emit('message', 'salut serveur ça va')
+        })
+    </script>
+</body>
+</html>

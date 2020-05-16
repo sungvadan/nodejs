@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chat</title>
+</head>
+<body>
+    <form method="POST" action="/" id="formChat">
+        <input type="text" id="message" />
+        <button id="send">Send</button>
+    </form>
+
+    <div id="chatPanel">    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://localhost:8089')
+        var pseudo = prompt('Votre pseudo')
+        socket.emit('pseudo', pseudo)
+        document.getElementById('formChat').addEventListener('submit', function(e) {
+            e.preventDefault()
+            var message = document.getElementById('message').value
+            document.getElementById('message').value = ''
+            if (message !== '') {
+                insertText({'pseudo': pseudo, 'message': message})
+                socket.emit('message', message)
+            }
+        })
+
+        socket.on('message', function(message) {
+            console.log(message)
+            insertText(message)
+        })
+
+        function insertText(message) {
+            document.getElementById('chatPanel').innerHTML += `<b>${message.pseudo}</b> ${message.message} <br/>`
+        }
+
+    </script>
+</body>
+</html>
