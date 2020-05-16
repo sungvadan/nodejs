@@ -11,7 +11,7 @@ var server = http.createServer(function(req, res) {
 
 var io = require('socket.io').listen(server)
 
-io.on('connect', function(socket) {
+io.on('connection', function(socket) {
     socket.on('pseudo', function(pseudo) {
         socket.pseudo = pseudo
     })
